@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">WinWin</string>
+    <string name="input_id">아이디 입력</string>
+    <string name="input_pwd">비밀번호 입력</string>
+    <string name="login">로그인</string>
+    <string name="find">아이디 또는 비밀번호 찾기</string>
+    <string name="join">회원가입</string>
+    <string name="check">중복확인</string>
+    <string name="reinput_pwd">비밀번호 재입력</string>
+    <string name="email">이메일 입력</string>
+    <string name="name">성함 입력</string>
+    <string name="findInfo">가입시 사용했던 이메일 주소와 이름을 적어주세요</string>
+    <string name="findEmail">이메일</string>
+    <string name="findName">이름</string>
+    <string name="findCheck">확인</string>
+    <string name="emailError">이메일 형식을 확인해 주세요</string>
+</resources>
