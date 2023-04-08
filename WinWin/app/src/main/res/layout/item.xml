@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    android:id="@+id/cardView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="172dp"
+    android:layout_height="191dp"
+    app:cardBackgroundColor="#3B81FF"
+    app:cardCornerRadius="10dp"
+    android:layout_marginTop="17dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="9dp">
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/workSite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/notosans_text"
+        android:textSize="18sp"
+        android:includeFontPadding="false"
+        android:text="GS25 00점"
+        android:layout_marginTop="17dp"
+        android:layout_marginStart="17dp"
+        android:textColor="@color/white"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/money"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/notosans_text"
+        android:textSize="18sp"
+        android:includeFontPadding="false"
+        android:text = "140,000"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/white"/>
+</androidx.cardview.widget.CardView>

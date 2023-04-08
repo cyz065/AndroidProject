@@ -1,17 +1,56 @@
 <resources>
     <string name="app_name">WinWin</string>
-    <string name="input_id">아이디 입력</string>
-    <string name="input_pwd">비밀번호 입력</string>
+    <string name="input_id"><b>아이디 또는 이메일</b></string>
+    <string name="input_pwd"><b>비밀번호</b></string>
     <string name="login">로그인</string>
-    <string name="find">아이디 또는 비밀번호 찾기</string>
-    <string name="join">회원가입</string>
+    <string name="find"><u>아이디 또는 비밀번호 찾기</u></string>
+    <string name="join"><u><font color="#4E4E4E">혹시 윈윈이 처음이신가요?<b> 회원가입 하기</b></font></u></string>
     <string name="check">중복확인</string>
-    <string name="reinput_pwd">비밀번호 재입력</string>
+    <string name="reinput_pwd">비밀번호 확인</string>
     <string name="email">이메일 입력</string>
-    <string name="name">성함 입력</string>
-    <string name="findInfo">가입시 사용했던 이메일 주소와 이름을 적어주세요</string>
+    <string name="name">이름 입력</string>
+    <string name="findInfo">아이디/비밀번호 찾기</string>
     <string name="findEmail">이메일</string>
     <string name="findName">이름</string>
     <string name="findCheck">확인</string>
     <string name="emailError">이메일 형식을 확인해 주세요</string>
+    <string name="findFail">입력하신 정보를 확인해 주세요</string>
+    <string name="findSuccess">입력하신 이메일로 아이디와 임시 비밀번호가 발급되었습니다. 다시 로그인 해 주세요.</string>
+    <string name="goBack">로그인 돌아가기</string>
+    <string name="win_win">WIN WIN</string>
+    <string name="confirm">확인</string>
+    <string name="joinTitle">회원가입</string>
+    <string name="dialogSuccess">입력하신 이메일 주소로 임시 비밀번호가 전송\n되었습니다.</string>
+    <string name="dialogFail">입력하신 정보를\n확인해 주세요.</string>
+    <string name="app_name_main">WIN WIN</string>
+    <string name="workingSite">근무지</string>
+    <string name="calendar">달력</string>
+    <string name="total_amount">당월 예상 급여액</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="custom_weekdays">
+        <item>일</item>
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
+    </string-array>
+
+    <string-array name="custom_months">
+        <item>1월</item>
+        <item>2월</item>
+        <item>3월</item>
+        <item>4월</item>
+        <item>5월</item>
+        <item>6월</item>
+        <item>7월</item>
+        <item>8월</item>
+        <item>9월</item>
+        <item>10월</item>
+        <item>11월</item>
+        <item>12월</item>
+    </string-array>
 </resources>

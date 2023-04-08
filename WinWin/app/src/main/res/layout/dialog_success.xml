@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/successDialog"
+        android:layout_width="205dp"
+        android:layout_height="247dp"
+        android:background="@drawable/success_dialog"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/successText"
+            android:layout_width="match_parent"
+            android:layout_height="104dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="63dp"
+            android:text="@string/dialogSuccess"
+            android:textSize="20sp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
+            android:fontFamily="@font/notosans_text"
+            android:includeFontPadding="false"
+            android:gravity="center_vertical" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dialog_button"
+            android:layout_gravity="center"
+            android:layout_marginTop="31dp"
+            android:layout_marginBottom="11dp"
+            android:text="@string/confirm"
+            android:fontFamily="@font/notosans_text"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:includeFontPadding="false"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,16 +3,19 @@ package com.management.winwin
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.util.Patterns
-import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
 import com.management.winwin.databinding.ActivityJoinBinding
-import java.util.regex.Pattern
+import com.management.winwin.startServer.*
+import retrofit2.Call
+import retrofit2.Callback
 
 class JoinActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding:ActivityJoinBinding
@@ -30,7 +33,8 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityJoinBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        textId = binding.IDText
+        setActionBar()
+        //textId = binding.IDText
         textPW = binding.passwordText
         textRePW = binding.rePasswordText
         textEmail = binding.emailText
@@ -38,8 +42,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener {
         checkDuplicate = binding.dupCheckBtn
         joinBtn = binding.joinBtn
 
-
-        idFocusListener()
+        //idFocusListener()
         emailFocusListener()
         passwordFocusListener()
         nameFocusListener()
@@ -47,16 +50,36 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener {
 
         checkDuplicate.setOnClickListener(this)
         joinBtn.setOnClickListener(this)
+
+    }
+
+    private fun setActionBar() {
+        setSupportActionBar(binding.toolbar)
+        val actionBar = supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+        actionBar?.setDisplayShowTitleEnabled(false)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+            else -> return false
+        }
     }
 
     override fun onClick(view: View?) {
         when(view!!.id) {
             R.id.dupCheckBtn-> {
-                if(binding.IDText.text!!.isEmpty() || binding.IDContainer.error != null) {
-                    Toast.makeText(baseContext, "아이디를 확인해 주세요", Toast.LENGTH_SHORT).show()
-                    return
+                dupCheck = false
+                val check = checkDuplicate()
+                if(!check) {
+                    Toast.makeText(this, "아이디를 확인해 주세요", Toast.LENGTH_SHORT).show()
                 }
-                Log.d("JoinActivity", "ID : " + textId.text.toString())
+
+                requestToServer(binding.emailText.text.toString())
                 dupCheck = true
             }
 
@@ -71,60 +94,94 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener {
                     return
                 }
 
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-                Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show()
-                Log.d("LoginInfo", "${binding.IDText.text.toString()}\n" +
-                        "${binding.passwordText.text.toString()}\n" + "${binding.rePasswordText.text.toString()}\n" +
-                "${binding.emailText.text.toString()}\n" + "${binding.nameText.text.toString()}\n")
+                requestToServer(binding.emailText.text.toString(), binding.passwordText.text.toString(), binding.nameText.text.toString())
             }
         }
     }
 
     private fun valid():Boolean {
-        val validID = binding.IDContainer.error == null
-        val validPassword = binding.passwordContainer.error == null
-        val validRePassword = binding.rePasswordContainer.error == null
-        val validEmail = binding.emailContainer.error == null
-        val validName = binding.nameContainer.error == null
+        //var validID = false
+        var validPassword = false
+        var validRePassword = false
+        var validEmail = false
+        var validName = false
 
-        return validID && validPassword && validRePassword && validEmail && validName
+        //if(!binding.IDText.text.isNullOrEmpty() && binding.IDContainer.error == null) {
+            //validID = true
+        //}
+        if(!binding.passwordText.text.isNullOrEmpty() && binding.passwordContainer.error == null) {
+            validPassword = true
+        }
+        if(!binding.rePasswordText.text.isNullOrEmpty() && binding.rePasswordContainer.error == null) {
+            validRePassword = true
+        }
+        if(!binding.emailText.text.isNullOrEmpty() && binding.EmailContainer.error == null) {
+            validEmail = true
+        }
+        if(!binding.nameText.text.isNullOrEmpty() && binding.nameContainer.error == null) {
+            validName = true
+        }
+
+        return validEmail && validPassword && validRePassword && validName
     }
 
+    private fun checkDuplicate():Boolean {
+        val email = binding.emailText.text
+        if(email.isNullOrEmpty() || email.isNullOrBlank()) {
+            return false
+        }
 
+        if(validEmail() == null) {
+            return true
+        }
+
+        return false
+    }
+
+    /*
     private fun idFocusListener() {
-        binding.IDText.setOnFocusChangeListener { _, focused ->
-            if(!focused) {
+        binding.IDText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
                 binding.IDContainer.error = validID()
             }
-        }
-    }
 
+        })
+    }*/
+
+    /*
     private fun validID():String? {
         val idText = binding.IDText.text.toString()
-        if(idText.length > 10) {
-            return "아이디는 최대 10자입니다."
+        if(!idText.matches("^[0-9a-zA-Z]*$".toRegex())) {
+           return "아이디는 1개 이상의 대,소문자 및 숫자만 가능합니다."
         }
         if(idText.length < 4) {
-            return "아이디는 최소 4자입니다."
+            return "아이디는 최소 4자 이상입니다."
         }
-        if(!idText.matches(".*[0-9].*".toRegex())) {
-            return "아이디는 1개 숫자를 포함합니다."
+        if(idText.length > 10) {
+            return "아이디는 최대 10자 이하입니다."
         }
-        if(!idText.matches(".*[a-zA-z].*".toRegex())) {
-            return "아이디는 1개 이상의 대, 소문자를 포함합니다."
-        }
-
         return null
-    }
+    }*/
 
     private fun emailFocusListener() {
-        binding.emailText.setOnFocusChangeListener { _, focused ->
-            if(!focused) {
-                binding.emailContainer.error = validEmail()
+        binding.emailText.addTextChangedListener(object :TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
-        }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                binding.EmailContainer.error = validEmail()
+            }
+
+        })
     }
 
     private fun validEmail():String? {
@@ -136,39 +193,46 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun passwordFocusListener() {
-        binding.passwordText.setOnFocusChangeListener { _, focused ->
-            if(!focused) {
+        binding.passwordText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
                 binding.passwordContainer.error = validPassword()
             }
-        }
+
+        })
     }
 
     private fun rePasswordFocusListener() {
-        binding.rePasswordText.setOnFocusChangeListener { _, focused ->
-            if(!focused) {
+        binding.rePasswordText.addTextChangedListener(object:TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
                 binding.rePasswordContainer.error = validRePassword()
             }
-        }
 
+        })
     }
 
     private fun validPassword():String? {
         val passwordText = binding.passwordText.text.toString()
-        if(passwordText.length < 4) {
-            return "비밀번호는 최소 4자리 이상입니다."
+
+        if(!passwordText.matches("^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$])(?=\\S+$).*$".toRegex())) {
+            return "1개 이상의 대,소문자 및 숫자, !@#\$를 포함해야 합니다."
+        }
+        if(passwordText.length < 8) {
+            return "비밀번호는 최소 8자리 이상입니다."
         }
         if(passwordText.length > 20) {
             return "비밀번호는 최대 20자리 입니다."
-        }
-
-        if(!passwordText.matches(".*[0-9].*".toRegex())) {
-            return "비밀번호는 1개 숫자를 포함합니다."
-        }
-        if(!passwordText.matches(".*[a-zA-z].*".toRegex())) {
-            return "비밀번호는 1개 이상의 대, 소문자를 포함합니다."
-        }
-        if(!passwordText.matches(".*[@#$%^&!].*".toRegex())) {
-            return "비밀번호는 !@#$%^& 중 하나를 포함해야 합니다."
         }
         return null
     }
@@ -188,11 +252,18 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun nameFocusListener() {
-        binding.nameText.setOnFocusChangeListener { _, focused ->
-            if(!focused) {
+        binding.nameText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
                 binding.nameContainer.error = validName()
             }
-        }
+
+        })
     }
 
     private fun validName():String? {
@@ -205,5 +276,72 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener {
             return "이름은 한글만 입력 가능합니다."
         }
         return null
+    }
+
+    private fun requestToServer(userName:String, password:String, email:String) {
+        Log.e("서버 request", "$userName $password $email")
+        val retIn = RetrofitService.getRetrofitInstance().create(RetrofitAPI::class.java)
+        val info = RequestJoin(userName, password, email)
+
+        retIn.requestJoin(info).enqueue(object :
+            Callback<ResponseJoin> {
+            override fun onFailure(call: Call<ResponseJoin>, t: Throwable) {
+                Log.e("서버 통신 실패", "${t.message}")
+            }
+
+            override fun onResponse(
+                call: Call<ResponseJoin>,
+                response: retrofit2.Response<ResponseJoin>
+            ) {
+                if (response.code() == 200) {
+                    if (response.body() != null) {
+                        val joinResponse = response.body()
+                        val code = joinResponse!!.code
+                        val message = joinResponse.message
+                        val data = joinResponse.data
+                        Log.d("서버 통신 성공", "code : $code message : $message data : $data")
+                        Toast.makeText(this@JoinActivity, "회원가입 성공", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@JoinActivity, LoginActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                } else {
+                    Log.e("서버 통신 성공 4XX", "code : ${response.code()}" + " message : ${response.errorBody()?.string()}")
+                    Toast.makeText(this@JoinActivity, "회원가입 실패", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+
+    private fun requestToServer(userName:String) {
+        val retIn = RetrofitService.getRetrofitInstance().create(RetrofitAPI::class.java)
+        val info = RequestDuplicate(userName)
+
+        retIn.requestDuplicate(info).enqueue(object: Callback<ResponseDuplicate> {
+            override fun onResponse(
+                call: Call<ResponseDuplicate>,
+                response: retrofit2.Response<ResponseDuplicate>
+            ) {
+                if(response.code() == 200) {
+                    val duplicateResponse = response.body()
+                    if(duplicateResponse != null) {
+                        val code = duplicateResponse.code
+                        val message = duplicateResponse.message
+                        val data = duplicateResponse.data
+                        Log.d("서버 통신 중복확인 성공", "code : $code message : $message data: $data")
+
+                        if(code == 103001) {
+                            Toast.makeText(this@JoinActivity, message, Toast.LENGTH_SHORT).show()
+                        }
+                        else if(code == 103002) {
+                            Toast.makeText(this@JoinActivity, message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+            override fun onFailure(call: Call<ResponseDuplicate>, t: Throwable) {
+                Log.e("서버 통신 중복확인 실패", "${t.message}")
+            }
+        })
     }
 }

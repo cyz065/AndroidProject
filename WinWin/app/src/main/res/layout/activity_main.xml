@@ -6,13 +6,557 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/mainToolbar"
+        style="@style/ToolbarStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name_main"
+            android:layout_marginStart="28dp"
+            style="@style/win_win_main"
+            android:fontFamily="@font/mplus_rounded_1c_extra_bold"
+            android:includeFontPadding="false"/>
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/mainToolbar"
+        android:orientation="vertical"
+        android:background="#FAFAFA">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="307dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical"
+            app:cardElevation="20dp"
+            app:cardCornerRadius="20dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/linearLayoutCompat4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="15dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/notosans_text"
+                        android:layout_marginStart="15dp"
+                        android:includeFontPadding="false"
+                        android:text="@string/workingSite"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/next"
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_gravity="right"
+                        android:background="@drawable/next" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat4"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginBottom="30dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:scrollbars="none"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat4"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginTop="13dp">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="172dp"
+                            android:layout_height="191dp"
+                            android:layout_marginEnd="15dp"
+                            app:cardBackgroundColor="#3B81FF"
+                            app:cardCornerRadius="20dp">
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="17dp"
+                                android:layout_marginTop="16dp"
+                                android:orientation="vertical">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="3dp"
+                                    android:fontFamily="@font/notosans_text"
+                                    android:includeFontPadding="false"
+                                    android:text="GS편의점 00점"
+                                    android:textColor="@color/white"
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/notosans_text"
+                                    android:includeFontPadding="false"
+                                    android:text="140,000"
+                                    android:textColor="@color/white"
+                                    android:textSize="18sp" />
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="172dp"
+                            android:layout_height="191dp"
+                            android:layout_marginEnd="15dp"
+                            app:cardBackgroundColor="#00D696"
+                            app:cardCornerRadius="20dp">
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="17dp"
+                                android:layout_marginTop="16dp"
+                                android:orientation="vertical">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="3dp"
+                                    android:fontFamily="@font/notosans_text"
+                                    android:includeFontPadding="false"
+                                    android:text="GS편의점 00점"
+                                    android:textColor="@color/white"
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/notosans_text"
+                                    android:includeFontPadding="false"
+                                    android:text="140,000"
+                                    android:textColor="@color/white"
+                                    android:textSize="18sp" />
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="172dp"
+                            android:layout_height="191dp"
+                            android:layout_marginEnd="15dp"
+                            app:cardBackgroundColor="@color/black"
+                            app:cardCornerRadius="20dp">
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="17dp"
+                                android:layout_marginTop="16dp"
+                                android:orientation="vertical">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="3dp"
+                                    android:fontFamily="@font/notosans_text"
+                                    android:includeFontPadding="false"
+                                    android:text="GS편의점 00점"
+                                    android:textColor="@color/white"
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/notosans_text"
+                                    android:includeFontPadding="false"
+                                    android:text="140,000"
+                                    android:textColor="@color/white"
+                                    android:textSize="18sp" />
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        </androidx.cardview.widget.CardView>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </HorizontalScrollView>->
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="15dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/workingSite"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/notosans_text"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/black"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/next"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/next"
+                    android:layout_gravity="right"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>-->
+<!--
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="40dp"
+                android:scrollbars="none">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="5dp">
+                    
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="172dp"
+                        android:layout_height="191dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardBackgroundColor="#3B81FF"
+                        android:layout_marginEnd="15dp">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginStart="17dp"
+                            android:layout_marginTop="16dp">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="GS편의점 00점"
+                                android:fontFamily="@font/notosans_text"
+                                android:includeFontPadding="false"
+                                android:textSize="18sp"
+                                android:textColor="@color/white"
+                                android:layout_marginBottom="3dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="140,000"
+                                android:fontFamily="@font/notosans_text"
+                                android:textSize="18sp"
+                                android:includeFontPadding="false"
+                                android:textColor="@color/white"/>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="172dp"
+                        android:layout_height="191dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardBackgroundColor="#00D696"
+                        android:layout_marginEnd="15dp">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginStart="17dp"
+                            android:layout_marginTop="16dp">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="GS편의점 00점"
+                                android:fontFamily="@font/notosans_text"
+                                android:includeFontPadding="false"
+                                android:textSize="18sp"
+                                android:textColor="@color/white"
+                                android:layout_marginBottom="3dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="140,000"
+                                android:fontFamily="@font/notosans_text"
+                                android:textSize="18sp"
+                                android:includeFontPadding="false"
+                                android:textColor="@color/white"/>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="172dp"
+                        android:layout_height="191dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardBackgroundColor="@color/black"
+                        android:layout_marginEnd="15dp">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginStart="17dp"
+                            android:layout_marginTop="16dp">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="GS편의점 00점"
+                                android:fontFamily="@font/notosans_text"
+                                android:includeFontPadding="false"
+                                android:textSize="18sp"
+                                android:textColor="@color/white"
+                                android:layout_marginBottom="3dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="140,000"
+                                android:fontFamily="@font/notosans_text"
+                                android:textSize="18sp"
+                                android:includeFontPadding="false"
+                                android:textColor="@color/white"/>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    </androidx.cardview.widget.CardView>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </HorizontalScrollView>-->
+
+
+
+        </androidx.cardview.widget.CardView>
+        
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="20dp"
+            android:layout_marginTop="40dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/calendarHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="15dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/notosans_text"
+                        android:includeFontPadding="false"
+                        android:layout_marginStart="15dp"
+                        android:text="@string/calendar"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/nextCalendar"
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_gravity="right"
+                        android:background="@drawable/next" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/calendarTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="@drawable/bottom_line"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/calendarHeader"
+                    android:fontFamily="@font/notosans_text"
+                    android:includeFontPadding="false"
+                    android:textSize="18sp"/>
+
+                <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                    android:id="@+id/calendar"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginTop="15dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/calendarTitle"
+                    app:mcv_calendarMode="week"
+                    app:mcv_selectionMode="none"
+                    app:mcv_showOtherDates="all"
+                    android:layout_marginBottom="15dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+        </androidx.cardview.widget.CardView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+
+
+        <!--
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="307dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="10dp">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="15dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/workingSite"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/notosans_text"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/black"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/next"
+                    android:layout_gravity="right"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+        
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:cardCornerRadius="10dp"
+            app:cardBackgroundColor="@color/white">
+
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                android:id="@+id/calendar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:mcv_showOtherDates="all"
+                app:mcv_leftArrowMask="@drawable/ic_baseline_keyboard_arrow_left_24"
+                app:mcv_rightArrowMask="@drawable/ic_baseline_keyboard_arrow_right_24"/>
+        </androidx.cardview.widget.CardView>
+        
+    </androidx.appcompat.widget.LinearLayoutCompat>-->
+    <!--
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainToolbar">
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/calendar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:mcv_showOtherDates="all"
+            app:mcv_leftArrowMask="@drawable/ic_baseline_keyboard_arrow_left_24"
+            app:mcv_rightArrowMask="@drawable/ic_baseline_keyboard_arrow_right_24"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

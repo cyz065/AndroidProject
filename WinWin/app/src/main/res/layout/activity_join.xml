@@ -8,22 +8,32 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        style="@style/ToolbarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:fontFamily="@font/notosans_text"
+            android:textColor="@color/black"
+            android:text="회원가입"
+            android:includeFontPadding="false"/>
     </androidx.appcompat.widget.Toolbar>
 
 
     <!-- inputText들의 정렬 -->
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/linearLayoutCompat2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/joinBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -35,10 +45,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="30dp"
-            android:text="1. 아이디"
-            android:textSize="18sp"
+            android:fontFamily="@font/notosans_text"
+            android:includeFontPadding="false"
+            android:text="이메일"
+            android:textColor="@color/joinColor"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/linearLayoutCompat"
             android:layout_width="match_parent"
@@ -51,32 +65,44 @@
             app:layout_constraintTop_toBottomOf="@+id/tag1">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/IDContainer"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:errorEnabled="true"
-                app:counterEnabled="true"
-                app:counterMaxLength="10"
-                android:layout_width="250dp"
+                android:id="@+id/EmailContainer"
+                style="@style/Widget.Design.TextInputLayout"
+                android:layout_width="263dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
+                android:layout_marginTop="11dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="20"
+                app:errorEnabled="true"
+                app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/appCompatTextView">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/IDText"
+                    android:id="@+id/emailText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fontFamily="@font/notosans_text"
+                    android:hint="이메일 주소 입력"
+                    android:includeFontPadding="false"
+                    android:inputType="textEmailAddress"
                     android:lines="1"
-                    android:inputType="text"
-                    android:hint="@string/input_id"/>
+                    android:textColorHint="@color/hint"
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
+
             <androidx.appcompat.widget.AppCompatButton
+                android:layout_marginTop="11dp"
                 android:id="@+id/dupCheckBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_marginStart="10dp"
-                android:text="@string/check" />
+                android:layout_width="72dp"
+                android:layout_height="28dp"
+                android:background="@drawable/check_btn"
+                android:fontFamily="@font/notosans_text"
+                android:includeFontPadding="false"
+                android:text="@string/check"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <!-- 2번 항목 -->
@@ -85,21 +111,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="15dp"
-            android:text="2. 비밀번호"
-            android:textSize="18sp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/notosans_text"
+            android:includeFontPadding="false"
+            android:text="@string/input_pwd"
+            android:textColor="@color/joinColor"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/passwordContainer"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="250dp"
+            style="@style/Widget.Design.TextInputLayout"
+            android:layout_width="335dp"
+            android:layout_marginEnd="120dp"
             android:layout_height="wrap_content"
-            app:errorEnabled="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="11dp"
             app:counterEnabled="true"
             app:counterMaxLength="20"
-            android:layout_marginStart="30dp"
+            app:errorEnabled="true"
+            app:hintEnabled="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tag2"
             app:passwordToggleEnabled="true">
@@ -108,20 +140,27 @@
                 android:id="@+id/passwordText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:lines="1"
+                android:fontFamily="@font/notosans_text"
+                android:hint="비밀번호 입력"
+                android:includeFontPadding="false"
                 android:inputType="textPassword"
-                android:hint="@string/input_pwd"/>
+                android:lines="1"
+                android:textColorHint="@color/hint"
+                android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/rePasswordContainer"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="250dp"
+            style="@style/Widget.Design.TextInputLayout"
+            android:layout_width="335dp"
+            android:layout_marginEnd="120dp"
             android:layout_height="wrap_content"
-            app:errorEnabled="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="27dp"
             app:counterEnabled="true"
             app:counterMaxLength="20"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="5dp"
+            app:errorEnabled="true"
+            app:hintEnabled="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/JoinPWInput"
             app:passwordToggleEnabled="true">
@@ -130,30 +169,39 @@
                 android:id="@+id/rePasswordText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:lines="1"
+                android:fontFamily="@font/notosans_text"
+                android:hint="@string/reinput_pwd"
+                android:includeFontPadding="false"
                 android:inputType="textPassword"
-                android:hint="@string/reinput_pwd" />
+                android:lines="1"
+                android:textColorHint="@color/hint"
+                android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- 3번째 항목 -->
+        <!--
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tag3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginStart="30dp"
-            android:text="3. 이메일 주소"
-            android:textSize="18sp"
+            android:layout_marginStart="20dp"
+            android:text="이메일 주소"
+            android:textSize="14sp"
+            android:fontFamily="@font/notosans_text"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reInput" />
+            app:layout_constraintTop_toBottomOf="@+id/reInput"
+            android:includeFontPadding="false"
+            android:textColor="@color/joinColor"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailContainer"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.Design.TextInputLayout"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             app:errorEnabled="true"
-            android:layout_marginStart="30dp"
+            app:hintEnabled="false"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tag3">
@@ -164,29 +212,38 @@
                 android:layout_height="match_parent"
                 android:lines="1"
                 android:inputType="textEmailAddress"
-                android:hint="@string/email" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="@string/email"
+                android:includeFontPadding="false"
+                android:fontFamily="@font/notosans_text"
+                android:textSize="14sp"
+                android:textColorHint="@color/hint"/>
+        </com.google.android.material.textfield.TextInputLayout>-->
 
         <!-- 4번째 항목 -->
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tag4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:layout_marginStart="30dp"
-            android:text="4. 성함"
-            android:textSize="18sp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/notosans_text"
+            android:includeFontPadding="false"
+            android:text="이름"
+            android:textColor="@color/joinColor"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/emailInput" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/nameContainer"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="250dp"
+            style="@style/Widget.Design.TextInputLayout"
+            android:layout_width="335dp"
             android:layout_height="wrap_content"
-            app:errorEnabled="true"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="120dp"
+            app:errorEnabled="true"
+            app:hintEnabled="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tag4">
 
@@ -194,18 +251,28 @@
                 android:id="@+id/nameText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:lines="1"
+                android:fontFamily="@font/notosans_text"
+                android:hint="@string/name"
+                android:includeFontPadding="false"
                 android:inputType="text"
-                android:hint="@string/name" />
+                android:lines="1"
+                android:textColorHint="@color/hint"
+                android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/joinBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/join"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/joinBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/button_design"
+        android:text="@string/confirm"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="40dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

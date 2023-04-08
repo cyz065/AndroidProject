@@ -3,10 +3,52 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/cyz06/AppData/Local/Android/Sdk/platforms/android-33/data/res/layout/activity_list_item.xml" value="0.23125" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable-v24/anim_brush.xml" value="0.318" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.132" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable-v24/splash_logo.xml" value="0.318" />
         <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/border.xml" value="0.1955" />
-        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/activity_find.xml" value="0.2753623188405797" />
-        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/activity_join.xml" value="0.2644927536231884" />
-        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/activity_login.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/bottom_line.xml" value="0.255" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/button_design.xml" value="0.2735" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/card_design.xml" value="0.267" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/card_layout.xml" value="0.2645" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/check_btn.xml" value="0.281" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/dialog_button.xml" value="0.258" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/ic_baseline_android_24.xml" value="0.367" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/ic_baseline_keyboard_arrow_left_24.xml" value="0.132" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/ic_baseline_keyboard_arrow_right_24.xml" value="0.132" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/ic_launcher_background.xml" value="0.132" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/ic_splash_winwin.xml" value="0.1" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/line.xml" value="0.1" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/logo.xml" value="0.2645" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/next.xml" value="0.2645" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/notification.xml" value="0.1" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/notifications.xml" value="0.367" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/some_id.xml" value="0.1" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/splash_image.xml" value="0.1345" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/splash_test.xml" value="0.1" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/splash_winwin.xml" value="0.132" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/success_dialog.xml" value="0.258" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/temp_logo.xml" value="0.367" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/today.xml" value="0.1" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/work_design.xml" value="0.259" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/drawable/work_list.xml" value="0.2645" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/activity_find.xml" value="0.25" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/activity_join.xml" value="0.16598360655737704" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/activity_login.xml" value="0.2776268115942029" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/activity_work_info.xml" value="0.23125" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/dialog_fail.xml" value="0.1864754098360656" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/dialog_success.xml" value="0.2305921052631579" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/find_fail.xml" value="0.3651041666666667" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/find_success.xml" value="0.3651041666666667" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/fragment_find_fail.xml" value="0.3651041666666667" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/fragment_find_main.xml" value="0.3401015228426396" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/fragment_find_success.xml" value="0.3651041666666667" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/info_item.xml" value="0.2305921052631579" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/item.xml" value="0.22" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/layout/working_list.xml" value="0.2305921052631579" />
+        <entry key="..\:/Users/cyz06/WinWin/app/src/main/res/menu/menu.xml" value="0.25" />
       </map>
     </option>
   </component>
