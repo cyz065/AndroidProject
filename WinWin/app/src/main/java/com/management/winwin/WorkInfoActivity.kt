@@ -41,9 +41,14 @@ class WorkInfoActivity : AppCompatActivity() {
     }
 
     private fun getWorkInfo() {
-        workList.add(Work("GS25 강남점", "50000"))
-        workList.add(Work("CU 강남점", "200000"))
-        workList.add(Work("스타벅스 강남점", "24000"))
+        workList.add(Work("GS25 강남점", "184567", "03.01 ~ 03.31", "270000"))
+        workList.add(Work("CU 강남점", "172459", "02.01 ~ 02.28", "300000"))
+        workList.add(Work("스타벅스 강남점", "987654", "02.18 ~ 02.25", "100000"))
+        workList.add(Work("메가커피 강남점", "487234", "01.18 ~ 01.31", "200000"))
+        workList.add(Work("이디야 커피 강남점", "165832", "03.01 ~ 04.19", "450000"))
+        workList.add(Work("CGV 강남점", "125345", "04.01 ~ 04.03", "25000"))
+        workList.add(Work("메가박스 강남점", "029863", "05.01 ~ 05.05", "10000"))
+        workList.add(Work("롯데리아 강남점", "472943", "04.19 ~ 04.26", "23000"))
         val adapter = WorkInfoAdapter(this, workList)
         binding.workInfoRecyclerView.adapter = adapter
     }

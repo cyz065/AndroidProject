@@ -9,10 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import com.management.winwin.Calendar.EventDecorator
-import com.management.winwin.Calendar.SaturdayDecorator
-import com.management.winwin.Calendar.SundayDecorator
-import com.management.winwin.Calendar.TodayDecorator
+import com.management.winwin.Calendar.*
 import com.management.winwin.Card.CardAdapter
 import com.management.winwin.Card.Work
 import com.management.winwin.databinding.ActivityMainBinding
@@ -55,14 +52,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.nextCalendar.setOnClickListener(this)
         getWorkInfo()
         calendar = binding.calendar
+
         calendarSetting()
 
-        binding.calendar.setOnMonthChangedListener { widget, date ->
+        binding.calendar.setOnMonthChangedListener { _, date ->
             val year = date.year
             val month = date.month
-
             binding.calendarTitle.text = makeTitle(year, month)
-        }
+       }
     }
 
     private fun makeTitle(year:Int, month:Int) :String{
@@ -77,11 +74,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun getWorkInfo() {
-        workList.add(Work("GS25 강남점", "50000"))
-        workList.add(Work("CU 강남점", "200000"))
-        workList.add(Work("스타벅스 강남점", "24000"))
+        workList.add(Work("GS25 강남점", "184567", "03.01 ~ 03.31", "270000"))
+        workList.add(Work("CU 강남점", "172459", "02.01 ~ 02.28", "300000"))
+        workList.add(Work("스타벅스 강남점", "987654", "02.18 ~ 02.25", "100000"))
+        workList.add(Work("메가커피 강남점", "487234", "01.18 ~ 01.31", "200000"))
+        workList.add(Work("이디야 커피 강남점", "165832", "03.01 ~ 04.19", "450000"))
+        workList.add(Work("CGV 강남점", "125345", "04.01 ~ 04.03", "25000"))
+        workList.add(Work("메가박스 강남점", "029863", "05.01 ~ 05.05", "10000"))
+        workList.add(Work("롯데리아 강남점", "472943", "04.19 ~ 04.26", "23000"))
+
         val adapter = CardAdapter(this, workList)
         binding.recyclerView.adapter = adapter
+
+
+        // 카드 뷰에서 목록 아이템 선택시 달력 화면으로 넘어간다.
+        adapter.itemClick = object:CardAdapter.ItemClick{
+            override fun onClick(view: View, position: Int) {
+                val intent = Intent(baseContext, CalendarActivity::class.java)
+                intent.putExtra("StoreName", workList[position].workSite)
+                intent.putExtra("StoreCode", workList[position].code)
+                startActivity(intent)
+            }
+        }
     }
 
 
@@ -150,10 +164,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             calendarHeaderBuilder.toString()
         }
 */
+        /*
+        val eventDates = ArrayList<CalendarDay>()
+
+        val dayInstance = Calendar.getInstance()
+        dayInstance.set(currentYear, currentMonth, currentDate)
+        var day = CalendarDay.from(dayInstance)
+        eventDates.add(day)*/
+        //binding.calendar.addDecorator(TextDecorator(eventDates, "270000"))
+        //binding.calendar.addDecorator(EventDecorator(eventDates, "27000"))
+
+
         // 점 찍기
         // CalendarDay객체를 ArrayList에 추가
         // threeColors배열에 색상 추가
         // 추가한 색상 개수 만큼 list에 존재하는 날짜에 점 찍기
+
         val eventDates = ArrayList<CalendarDay>()
         var dot_day = currentDate
 
@@ -185,8 +211,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         twoColors[0] = Color.BLACK
         twoColors[0] = Color.MAGENTA
 
-        binding.calendar.addDecorator(EventDecorator(threeColors, eventDates))
-        binding.calendar.addDecorator(EventDecorator(twoColors, tmp))
+        binding.calendar.addDecorator(EventDecorator(3, eventDates))
+        binding.calendar.addDecorator(EventDecorator(2, tmp))
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -198,6 +225,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when(item.itemId) {
             R.id.notification -> {
                 Toast.makeText(this, "알림 클릭", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, NotificationActivity::class.java)
+                startActivity(intent)
                 return super.onOptionsItemSelected(item)
             }
             else -> super.onOptionsItemSelected(item)
@@ -214,11 +243,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             return
         }
 
-        val tmp = retIn.getResponse(token).enqueue(object: Callback<ResponseBody> {
+        retIn.getResponse(token).enqueue(object: Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 try {
                     val html:String = response.body()!!.string()
-                    Log.e("성공", html)
+                    Log.e("성공 메인", html)
                     Toast.makeText(this@MainActivity, html, Toast.LENGTH_SHORT).show()
 
                 }

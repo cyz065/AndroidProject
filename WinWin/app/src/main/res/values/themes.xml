@@ -15,9 +15,9 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.App.Starting" parent="Theme.SplashScreen.IconBackground">
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/backGround</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/anim_brush</item>
+        <!--<item name="windowSplashScreenAnimatedIcon">@drawable/ic_logo</item>-->
         <item name="windowSplashScreenAnimationDuration">1000</item>
         <item name="postSplashScreenTheme">@style/Theme.WinWin</item>
     </style>

@@ -26,12 +26,10 @@
         <item>@color/card2</item>
         <item>@color/card3</item>
         <item>@color/card4</item>
-        <item>@color/card5</item>
     </array>
 
     <color name="card1">#00D696</color>
     <color name="card2">#3B81FF</color>
-    <color name="card3">#FFCDB0</color>
-    <color name="card4">#FFFF00</color>
-    <color name="card5">#FF0000</color>
+    <color name="card3">#F9B38C</color>
+    <color name="card4">#6898EF</color>
 </resources>

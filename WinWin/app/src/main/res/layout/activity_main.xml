@@ -82,6 +82,13 @@
                         android:layout_height="34dp"
                         android:layout_gravity="right"
                         android:background="@drawable/next" />
+<!--
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/next"
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_gravity="right"
+                        android:background="@drawable/next" />-->
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -413,9 +420,9 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
                         android:fontFamily="@font/notosans_text"
                         android:includeFontPadding="false"
-                        android:layout_marginStart="15dp"
                         android:text="@string/calendar"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
@@ -441,12 +448,13 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="30dp"
                     android:background="@drawable/bottom_line"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/calendarHeader"
                     android:fontFamily="@font/notosans_text"
                     android:includeFontPadding="false"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/calendarHeader" />
+
 
                 <com.prolificinteractive.materialcalendarview.MaterialCalendarView
                     android:id="@+id/calendar"
