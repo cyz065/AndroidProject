@@ -35,3 +35,15 @@
 ![녹화_2023_05_05_17_00_20_71](https://user-images.githubusercontent.com/50603211/236405870-34b6bf1c-5664-4525-a569-fd5b5f6e5c37.gif)
 
 
+## 4. 근무지 별 상세 조회
+
+* 특정 근무지에 대한 한달 동안의 상세 내역 출력
+
+* 달력을 통해 근무 이력이 있는 날의 상세 내역 조회 가능
+
+* Expandable RecyclerView를 활용해 상세 내역 조회 가능
+
+* 서버에서 데이터 가져오기 (구현중)
+
+![녹화_2023_05_10_14_51_22_590](https://github.com/cyz065/AndroidProject/assets/50603211/7faf4e2c-aee3-4449-a42b-92e61ec454ce)
+
