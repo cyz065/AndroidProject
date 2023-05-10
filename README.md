@@ -45,5 +45,6 @@
 
 * 서버에서 데이터 가져오기 (구현중)
 
-![녹화_2023_05_10_14_51_22_590](https://github.com/cyz065/AndroidProject/assets/50603211/7faf4e2c-aee3-4449-a42b-92e61ec454ce)
+![녹화_2023_05_10_14_57_29_150](https://github.com/cyz065/AndroidProject/assets/50603211/40c5adfe-a921-4b93-9dba-6edcdb0bf719)
+
 
