@@ -1,12 +1,9 @@
-package com.management.winwin.Calendar
+package com.management.winwin.startServer
 
 import com.google.gson.annotations.SerializedName
+import java.time.LocalDateTime
 
-data class DetailInfo(
-    var date:String,
-    var workTime:String,
-    var isExpand:Boolean = false,
-
+data class WorkDetail (
     val id:Int,
     val userId:Int,
     @SerializedName("username")

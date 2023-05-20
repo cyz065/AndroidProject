@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.management.winwin.R
 import com.management.winwin.databinding.InfoListBinding
 import com.management.winwin.databinding.ItemBinding
+import com.management.winwin.startServer.WorkDetail
+import java.lang.StringBuilder
 import java.text.DecimalFormat
 
 class DetailInfoAdapter(val context: Context, private val infoList:ArrayList<DetailInfo>) : RecyclerView.Adapter<DetailInfoAdapter.ViewHolder>() {
@@ -24,12 +26,12 @@ class DetailInfoAdapter(val context: Context, private val infoList:ArrayList<Det
     inner class ViewHolder(val binding: InfoListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(info:DetailInfo) {
             binding.schedule.text = info.date
-            binding.workTime.text = info.workTime
-            binding.restTime.text = info.rest
+            binding.workTime.text = "근무시간: " + info.workTime
+            binding.restTime.text = timeCalc(info.breakTime)//info.breakTime.toString() + "분"
 
-            val moneyFormat = decimalFormat.format(info.money.toDouble())
-            val totalFormat = decimalFormat.format(info.total.toDouble())
-            binding.money.text = moneyFormat.toString() + "원"
+            val moneyFormat = decimalFormat.format(info.wage.toDouble())
+            val totalFormat = decimalFormat.format(info.totalPay.toDouble())
+            binding.money.text = "시급: " + moneyFormat.toString() + "원"
             binding.total.text = totalFormat.toString() + "원"
 
             binding.detail.setOnClickListener {
@@ -71,4 +73,19 @@ class DetailInfoAdapter(val context: Context, private val infoList:ArrayList<Det
     }
 
     override fun getItemCount(): Int = infoList.size
+
+    private fun timeCalc(time:Int):String {
+        val sb = StringBuilder()
+        sb.append("휴게시간: ")
+        var hour = 0
+        var min = 0
+
+        hour = (time / 60)
+        min = (time % 60)
+
+        if(hour > 0) sb.append(hour).append("시간").append(min).append("분")
+        else sb.append(min).append("분")
+
+        return sb.toString()
+    }
 }

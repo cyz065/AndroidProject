@@ -37,8 +37,8 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="307dp"
-            android:layout_marginTop="60dp"
+            android:layout_height="287dp"
+            android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:orientation="vertical"
@@ -53,19 +53,19 @@
                     android:id="@+id/linearLayoutCompat4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="15dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="15dp">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/notosans_text"
                         android:layout_marginStart="15dp"
+                        android:fontFamily="@font/notosans_text"
                         android:includeFontPadding="false"
                         android:text="@string/workingSite"
                         android:textColor="@color/black"
@@ -82,7 +82,7 @@
                         android:layout_height="34dp"
                         android:layout_gravity="right"
                         android:background="@drawable/next" />
-<!--
+                    <!--
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/next"
                         android:layout_width="34dp"
@@ -91,20 +91,36 @@
                         android:background="@drawable/next" />-->
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/period"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat4"
                     android:layout_marginStart="30dp"
+                    android:layout_marginEnd="15dp"
+                    android:fontFamily="@font/notosans_text"
+                    android:includeFontPadding="false"
+                    android:text="2023.08.01 ~ 2024.08.01"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginEnd="30dp"
-                    android:layout_marginTop="13dp"
-                    android:layout_marginBottom="30dp"/>
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/period"
+                    app:layout_constraintVertical_bias="1.0" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!--
@@ -394,7 +410,7 @@
         
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="260dp"
+            android:layout_height="370dp"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             app:cardCornerRadius="20dp"
@@ -444,9 +460,9 @@
                     android:id="@+id/calendarTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="55dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
+                    android:layout_marginEnd="55dp"
                     android:background="@drawable/bottom_line"
                     android:fontFamily="@font/notosans_text"
                     android:includeFontPadding="false"
@@ -460,6 +476,18 @@
                     android:id="@+id/calendar"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/calendarTitle"
+                    app:mcv_selectionMode="none"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--
+                                app:mcv_calendarMode="month"
+                <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                    android:id="@+id/calendar"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginTop="15dp"
@@ -467,11 +495,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/calendarTitle"
-                    app:mcv_calendarMode="week"
                     app:mcv_selectionMode="none"
                     app:mcv_showOtherDates="all"
                     android:layout_marginBottom="15dp"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                -->
 
 
 

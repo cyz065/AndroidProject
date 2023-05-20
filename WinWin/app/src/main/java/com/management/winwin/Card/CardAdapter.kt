@@ -26,10 +26,9 @@ class CardAdapter(val context: Context, private val workList:ArrayList<Work>) : 
 
     inner class ViewHolder(val binding: ItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(info:Work) {
-            binding.workSite.text = info.workSite
-            binding.workCode.text = info.code
-            binding.date.text = info.date
-            val moneyFormat = decimalFormat.format(info.money.toDouble())
+            binding.workSite.text = info.storeName
+            binding.workCode.text = info.storeCode
+            val moneyFormat = decimalFormat.format(info.totalPay.toDouble())
             binding.money.text = moneyFormat.toString()
             index %= colors.size
             binding.cardView.setCardBackgroundColor(colors[index])

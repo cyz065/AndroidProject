@@ -22,20 +22,30 @@ import com.prolificinteractive.materialcalendarview.OnRangeSelectedListener
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding:ActivityMainBinding
-    //val models = ArrayList<Model>()
-    //private lateinit var adapter:Adapter
-
     private lateinit var calendar: MaterialCalendarView
     private val workList = ArrayList<Work>()
+
+    private var startSearchTime = LocalDateTime.now()
+    private var endSearchTime = LocalDateTime.now()
+
+    private val retIn = RetrofitService.getRetrofitInstance().create(RetrofitAPI::class.java)
+    private val token = prefs.getString("token", "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,13 +56,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         setSupportActionBar(binding.mainToolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
-        //supportActionBar!!.setIcon(R.drawable.temp_logo)
         supportActionBar!!.setLogo(R.drawable.temp_logo)
         binding.next.setOnClickListener(this)
         binding.nextCalendar.setOnClickListener(this)
-        getWorkInfo()
         calendar = binding.calendar
 
+        getSimpleWorkInfo()
         calendarSetting()
 
         binding.calendar.setOnMonthChangedListener { _, date ->
@@ -73,7 +82,77 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         return calendarHeaderBuilder.toString()
     }
 
-    private fun getWorkInfo() {
+    private fun getSimpleWorkInfo() {
+        //val retIn = RetrofitService.getRetrofitInstance().create(RetrofitAPI::class.java)
+        //val token = prefs.getString("token", "")
+        if(token == "")
+           return
+
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+
+        // 실제 현재 달의 경우 +1을 설정
+        val month = calendar.get(Calendar.MONTH) // 서버 전송 시 지난달
+        Log.e("년 월", "$year ${month + 1}") // 현재 달로 표시
+        calendar.set(year, month - 1, 1) // 지난 달 표기
+        val endOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH) // 4월에 대한 마지막 날짜
+
+        startSearchTime = LocalDate.of(year - 1, month, 1).atTime(0,0,0)
+        endSearchTime = LocalDate.of(year + 1, month, endOfMonth).atTime(23, 59, 59)
+
+        val startString = startSearchTime.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
+        val endString = endSearchTime.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
+        val sb = StringBuilder()
+        binding.period.text = sb.append(startString).append(" ~ ").append(endString).toString()
+
+        Log.e("토큰", "$startSearchTime $endSearchTime")
+
+        retIn.getSimpleWork(authorization = token, startSearchTime = startSearchTime.toString(), endSearchTime = endSearchTime.toString())
+            .enqueue(object :Callback<ResponseSimpleWork> {
+            override fun onResponse(
+                call: Call<ResponseSimpleWork>,
+                response: Response<ResponseSimpleWork>
+            ) {
+                if(response.isSuccessful) {
+                    val body = response.body()
+                    val code = body!!.code
+                    val message = body.message
+                    val data = body.data
+                    Log.e("서버 성공", "$data")
+                    for(store in data) {
+                        workList.add(store)
+                    }
+
+                    Log.e("서버 성공", "${workList.size} $message $code")
+
+                    val adapter = CardAdapter(baseContext, workList)
+                    binding.recyclerView.adapter = adapter
+                    adapter.itemClick = object:CardAdapter.ItemClick{
+                        override fun onClick(view: View, position: Int) {
+                            val intent = Intent(baseContext, CalendarActivity::class.java)
+                            intent.putExtra("StoreName", workList[position].storeName)
+                            intent.putExtra("StoreCode", workList[position].storeCode)
+                            intent.putExtra("StoreId", workList[position].storeId)
+                            intent.putExtra("Start", startSearchTime.toString())
+                            intent.putExtra("End", endSearchTime.toString())
+                            startActivity(intent)
+                        }
+                    }
+                }
+                else {
+                    Log.e("랭킹", "실패 ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseSimpleWork>, t: Throwable) {
+                Log.e("랭킹", "완전 실패 ${t.message}")
+            }
+        })
+
+
+
+
+/*
         workList.add(Work("GS25 강남점", "184567", "03.01 ~ 03.31", "270000"))
         workList.add(Work("CU 강남점", "172459", "02.01 ~ 02.28", "300000"))
         workList.add(Work("스타벅스 강남점", "987654", "02.18 ~ 02.25", "100000"))
@@ -81,21 +160,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         workList.add(Work("이디야 커피 강남점", "165832", "03.01 ~ 04.19", "450000"))
         workList.add(Work("CGV 강남점", "125345", "04.01 ~ 04.03", "25000"))
         workList.add(Work("메가박스 강남점", "029863", "05.01 ~ 05.05", "10000"))
-        workList.add(Work("롯데리아 강남점", "472943", "04.19 ~ 04.26", "23000"))
+        workList.add(Work("롯데리아 강남점", "472943", "04.19 ~ 04.26", "23000"))*/
 
-        val adapter = CardAdapter(this, workList)
-        binding.recyclerView.adapter = adapter
+        //val adapter = CardAdapter(this, workList)
+        //binding.recyclerView.adapter = adapter
 
 
         // 카드 뷰에서 목록 아이템 선택시 달력 화면으로 넘어간다.
+        /*
         adapter.itemClick = object:CardAdapter.ItemClick{
             override fun onClick(view: View, position: Int) {
                 val intent = Intent(baseContext, CalendarActivity::class.java)
-                intent.putExtra("StoreName", workList[position].workSite)
-                intent.putExtra("StoreCode", workList[position].code)
+                intent.putExtra("StoreName", workList[position].storeName)
+                intent.putExtra("StoreCode", workList[position].storeCode)
                 startActivity(intent)
             }
-        }
+        }*/
     }
 
 
@@ -106,7 +186,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val currentYear = startTimeCalendar.get(Calendar.YEAR)
         val currentMonth = startTimeCalendar.get(Calendar.MONTH)
         val currentDate = startTimeCalendar.get(Calendar.DATE)
-
         Log.e("달력", "$currentYear $currentMonth $currentDate")
         // 주말 커스텀
         val sundayDecorator = SundayDecorator()
@@ -180,6 +259,81 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // threeColors배열에 색상 추가
         // 추가한 색상 개수 만큼 list에 존재하는 날짜에 점 찍기
 
+
+        val now = LocalDateTime.now()
+        val calendar = Calendar.getInstance()
+
+        /*
+        val year = calendar.get(Calendar.YEAR)
+ㅕ
+        // 실제 현재 달의 경우 +1을 설정
+        val month = calendar.get(Calendar.MONTH) // 서버 전송 시 지난달
+        Log.e("년 월", "$year ${month + 1}") // 현재 달로 표시
+        calendar.set(year, month - 1, 1) // 지난 달 표기
+        val endOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH) // 4월에 대한 마지막 날짜
+        */
+        Log.e("now", "${now.year} ${now.monthValue} ${now.dayOfMonth}")
+        calendar.set(now.year, now.monthValue - 2, now.dayOfMonth) // 원래는 1을 빼주어야 함 5월에 4월 확인을 위해 우선 2 빼주기
+        val endOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+
+        val startSearchTime = LocalDate.of(now.year - 1, now.month - 1, 1).atTime(0,0,0)
+        val endSearchTime = LocalDate.of(now.year + 1, now.month - 1, endOfMonth).atTime(23, 59, 59)
+        Log.e("조회 날짜", "$startSearchTime $endSearchTime")
+
+        val oneEvent = ArrayList<CalendarDay>()
+        val twoEvent = ArrayList<CalendarDay>()
+        val threeEvent = ArrayList<CalendarDay>()
+
+        val schedule = HashMap<CalendarDay, Int> ()
+
+        retIn.getAllWork(authorization = token, startSearchTime = startSearchTime.toString(), endSearchTime = endSearchTime.toString())
+            .enqueue(object:Callback<ResponseAllWork> {
+                override fun onResponse(call: Call<ResponseAllWork>, response: Response<ResponseAllWork>) {
+                    if(response.isSuccessful) {
+                        val body = response.body()
+                        val data = body!!.data
+                        val calendar = Calendar.getInstance()
+                        Log.e("데이터 사이즈", "${data.size}")
+
+                        for(detail in data) {
+                            val start = detail.startTime
+                            val dateTime = LocalDateTime.parse(start)
+                            calendar.set(dateTime.year, dateTime.monthValue - 1, dateTime.dayOfMonth)
+                            val day = CalendarDay.from(calendar)
+                            schedule[day] = schedule.getOrDefault(day, 0) + 1
+                            Log.e("현황", "${detail.storeName} ${detail.startTime} ${detail.storeId}")
+                        }
+
+                        Log.e("날짜 현황", schedule.toString())
+
+                        for((day, _) in schedule) {
+                            when(schedule[day]) {
+                                1 -> oneEvent.add(day)
+                                2 -> twoEvent.add(day)
+                                else -> threeEvent.add(day)
+                            }
+                        }
+                        val decorators = mutableListOf<EventDecorator>()
+                        decorators.add(EventDecorator(3, threeEvent))
+                        decorators.add(EventDecorator(2, twoEvent))
+                        decorators.add(EventDecorator(1, oneEvent))
+                        binding.calendar.addDecorators(decorators)
+
+                        Log.e("크기", "$threeEvent $twoEvent $oneEvent")
+                    }
+
+                    else {
+                        Log.e("서버 연결 실패", "실패 ${response.errorBody()?.string()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseAllWork>, t: Throwable) {
+                    Log.e("서버 연결 완전 실패", "완전 실패 ${t.message}")
+                }
+            })
+
+
+/*
         val eventDates = ArrayList<CalendarDay>()
         var dot_day = currentDate
 
@@ -200,8 +354,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         day = CalendarDay.from(date)
 
         val tmp = ArrayList<CalendarDay>()
-        tmp.add(day)
-
+        tmp.add(day)*/
+/*
         val threeColors = IntArray(3)
         threeColors[0] = Color.BLUE
         threeColors[1] = Color.RED
@@ -209,10 +363,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         val twoColors = IntArray(2)
         twoColors[0] = Color.BLACK
-        twoColors[0] = Color.MAGENTA
+        twoColors[0] = Color.MAGENTA*/
 
-        binding.calendar.addDecorator(EventDecorator(3, eventDates))
-        binding.calendar.addDecorator(EventDecorator(2, tmp))
+        //binding.calendar.addDecorator(EventDecorator(3, eventDates))
+        //binding.calendar.addDecorator(EventDecorator(2, tmp))
 
     }
 
@@ -235,8 +389,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun requestToServer() {
-        val retIn = RetrofitService.getRetrofitInstance().create(RetrofitAPI::class.java)
-        val token = prefs.getString("token", "")
+        //val retIn = RetrofitService.getRetrofitInstance().create(RetrofitAPI::class.java)
+        //val token = prefs.getString("token", "")
         Log.e("통신 토큰", token)
         if(token == "") {
             Log.e("통신 토큰 에러", token)
@@ -248,7 +402,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 try {
                     val html:String = response.body()!!.string()
                     Log.e("성공 메인", html)
-                    Toast.makeText(this@MainActivity, html, Toast.LENGTH_SHORT).show()
 
                 }
                 catch (e : Exception) {
@@ -262,11 +415,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
+
     override fun onClick(view: View) {
         when(view.id) {
             R.id.next-> {
                 Toast.makeText(this, "업장 조회 클릭", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, WorkInfoActivity::class.java)
+                intent.putExtra("Start", startSearchTime.toString())
+                intent.putExtra("End", endSearchTime.toString())
                 startActivity(intent)
             }
             R.id.nextCalendar -> {
@@ -274,5 +430,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
+
+
 }
 

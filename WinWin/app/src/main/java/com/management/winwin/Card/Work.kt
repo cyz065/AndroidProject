@@ -1,3 +1,9 @@
 package com.management.winwin.Card
 
-data class Work(var workSite:String, var code:String, var date:String, var money:String)
+import java.time.LocalDateTime
+
+data class Work(
+    var storeName:String,
+    var storeCode:String,
+    var totalPay:Int,
+    var storeId:Int)

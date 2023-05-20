@@ -17,8 +17,8 @@ class WorkInfoAdapter(val context: Context, private val workList:ArrayList<Work>
 
     inner class ViewHolder(val binding: InfoItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(info:Work) {
-            binding.workSite.text = info.workSite
-            val moneyFormat = decimalFormat.format(info.money.toDouble())
+            binding.workSite.text = info.storeName
+            val moneyFormat = decimalFormat.format(info.totalPay.toDouble())
             val sb = StringBuilder()
             sb.append("\u20A9").append(moneyFormat.toString())
             binding.money.text = sb.toString()

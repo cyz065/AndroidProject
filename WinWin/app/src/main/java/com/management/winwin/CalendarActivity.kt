@@ -1,40 +1,49 @@
 package com.management.winwin
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import com.management.winwin.Calendar.*
-import com.management.winwin.Card.CardAdapter
-import com.management.winwin.Card.Work
 import com.management.winwin.databinding.ActivityCalendarBinding
+import com.management.winwin.preference.Application.Companion.prefs
+import com.management.winwin.startServer.*
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.lang.StringBuilder
-import java.text.SimpleDateFormat
+import java.time.Duration
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.collections.HashSet
 
 class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChangedListener, OnDateSelectedListener {
     private lateinit var binding:ActivityCalendarBinding
     private var storeCode:String? = null
     private var storeName:String? = null
-    private val infoList = ArrayList<DetailInfo>()
+    private var storeId = -1
+
     private lateinit var adapter:DetailInfoAdapter
+    private val retIn = RetrofitService.getRetrofitInstance().create(RetrofitAPI::class.java)
+    private val token = prefs.getString("token", "")
 
     // 각 날짜 별로 이벤트 데이가 추가
     // ex) 04-26 : 일정이 3개
+    // 각 날짜 별 존재 일정 리스트
+    private var infoList = ArrayList<DetailInfo>()
+    // 일자별 모든 일정기록
+    private val allInfo = HashMap<CalendarDay, ArrayList<DetailInfo>>()
+    // 일자별 일정의 개수
     private val schedule = HashMap<CalendarDay, Int>()
-    private val threeEvents = ArrayList<CalendarDay>()
-    private val twoEvents = ArrayList<CalendarDay>()
-    private val oneEvent = ArrayList<CalendarDay>()
 
     private val dayOfWeek = mutableMapOf<String, String>(
         ("Mon" to "월"), ("Sun" to "일"), ("Tue" to "화"),
@@ -50,12 +59,18 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
 
         storeCode = intent.getStringExtra("StoreCode")
         storeName = intent.getStringExtra("StoreName")
+        storeId = intent.getIntExtra("StoreId", -1)
+        val startSearchTime = intent.getStringExtra("Start")
+        val endSearchTime = intent.getStringExtra("End")
 
-        calendarSetting()
+        if (startSearchTime != null && endSearchTime != null)
+            calendarSetting(startSearchTime, endSearchTime)
+
         binding.next.setOnClickListener(this)
         binding.before.setOnClickListener(this)
         binding.monthCalendar.setOnMonthChangedListener(this)
         binding.monthCalendar.setOnDateChangedListener(this)
+        binding.addButton.setOnClickListener(this)
     }
 
     private fun setActionBar() {
@@ -88,7 +103,7 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
         }
     }
 
-    private fun calendarSetting() {
+    private fun calendarSetting(startSearchTime:String, endSearchTime:String) {
         if(storeName == null && storeCode == null) {
             finish()
             return
@@ -180,7 +195,7 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
 
         val adapter = CardAdapter(this, workList)
         binding.recyclerView.adapter = adapter*/
-
+/*
         var dot_day = currentDate
 
         var date = Calendar.getInstance()
@@ -237,18 +252,124 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
         //eventDates.add(day)
         binding.monthCalendar.addDecorators(decorators)
         //binding.monthCalendar.addDecorator(EventDecorator(schedule, day))
-        Log.e("달력 로그", "${schedule}")
-        //binding.monthCalendar.addDecorator(EventDecorator(schedule))
+        Log.e("달력 로그", "$schedule")
+        //binding.monthCalendar.addDecorator(EventDecorator(schedule))*/
 
+        val oneEvent = ArrayList<CalendarDay>()
+        val twoEvent = ArrayList<CalendarDay>()
+        val threeEvent = ArrayList<CalendarDay>()
 
-        adapter = DetailInfoAdapter(this, infoList)
-        val today = Calendar.getInstance()
+        val schedule = HashMap<CalendarDay, Int> ()
+        Log.e("근무지별 날짜 현황", "$startSearchTime $endSearchTime $storeId")
+
+        retIn.getStoreWork(authorization = token, startSearchTime = startSearchTime, endSearchTime = endSearchTime, storeId = storeId)
+            .enqueue(object:Callback<ResponseDetail> {
+                override fun onResponse(call: Call<ResponseDetail>, response: Response<ResponseDetail>) {
+                    if(response.isSuccessful) {
+                        val body = response.body()
+                        val list = body!!.data
+                        val calendar = Calendar.getInstance()
+                        Log.e("근무지별 달력 list", "${list.size}")
+                        for(item in list) {
+                            val start = item.startTime
+                            val end = item.endTime
+                            val startTime = LocalDateTime.parse(start)
+                            val endTime = LocalDateTime.parse(end)
+                            item.workTime = timeCalc(startTime, endTime)
+
+                            calendar.set(startTime.year, startTime.monthValue - 1, startTime.dayOfMonth)
+                            val day = CalendarDay.from(calendar)
+                            val date = dateFormatter(day, true)
+                            item.date = date
+
+                            if(allInfo[day] == null) {
+                                allInfo[day] = ArrayList()
+                                allInfo[day]!!.add(item)
+                            } else {
+                                allInfo[day]!!.add(item)
+                            }
+                            schedule[day] = schedule.getOrDefault(day, 0) + 1
+                            Log.e("근무지별 날짜", day.toString())
+                        }
+
+                        Log.e("근무지별 달력 현황", schedule.toString())
+                        Log.e("근무지별 달력 현황", allInfo.toString())
+                        for((day, _) in schedule) {
+                            when(schedule[day]) {
+                                1 -> oneEvent.add(day)
+                                2 -> twoEvent.add(day)
+                                else -> threeEvent.add(day)
+                            }
+                        }
+
+                        val decorators = mutableListOf<EventDecorator>()
+                        decorators.add(EventDecorator(3, threeEvent))
+                        decorators.add(EventDecorator(2, twoEvent))
+                        decorators.add(EventDecorator(1, oneEvent))
+                        binding.monthCalendar.addDecorators(decorators)
+
+                        //val today = Calendar.getInstance()
+
+                        //binding.information.setHasFixedSize(true)
+                        //today.set(currentYear, currentMonth, currentDate)
+                        //makeInfoList(CalendarDay.from(today))
+                        //binding.information.setHasFixedSize(true)
+                        //binding.information.adapter = adapter
+                        //Log.e("달력 확인", "$oneEvent $twoEvents $threeEvents")
+
+                        //adapter = DetailInfoAdapter(baseContext, infoList)
+
+                        val today = Calendar.getInstance()
+                        today.set(currentYear, currentMonth, currentDate)
+                        infoList = allInfo.getOrDefault(CalendarDay.from(today), ArrayList())
+                        adapter = DetailInfoAdapter(baseContext, infoList)
+                        binding.information.setHasFixedSize(true)
+                        binding.information.adapter = adapter
+                    }
+
+                    else {
+                        Log.e("서버 연결 실패", "실패 ${response.errorBody()?.string()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseDetail>, t: Throwable) {
+                    Log.e("서버 연결 완전 실패", "완전 실패 ${t.message}")
+                }
+            })
+
+        // 밑에 부분
+        //adapter = DetailInfoAdapter(this, infoList)
+        //val today = Calendar.getInstance()
 
         //binding.information.setHasFixedSize(true)
-        today.set(currentYear, currentMonth, currentDate)
-        makeInfoList(CalendarDay.from(today))
-        binding.information.setHasFixedSize(true)
-        binding.information.adapter = adapter
+        //today.set(currentYear, currentMonth, currentDate)
+        //makeInfoList(CalendarDay.from(today))
+        //binding.information.setHasFixedSize(true)
+        //binding.information.adapter = adapter
+        //Log.e("달력 확인", "$oneEvent $twoEvents $threeEvents")
+    }
+
+    private fun dateFormatter(date:CalendarDay, dot:Boolean):String {
+        val sb = StringBuilder()
+        val year = String.format("%d.",date.year)
+        val month = String.format("%02d.", date.month + 1)
+        val tmp = date.date.toString().split(" ")
+        val day = String.format("%02d", date.day)
+        val week = String.format("%s", dayOfWeek[tmp[0]])
+
+        sb.append(year).append(month).append(day).append(" (").append(week).append(")")
+        return sb.toString()
+    }
+
+    private fun dateFormatter(date:CalendarDay):String{
+        val sb = StringBuilder()
+        val year = String.format("%d년", date.year)
+        val month = String.format("%02d월", date.month + 1)
+        val tmp = date.date.toString().split(" ")
+        val day = String.format("%02d일", date.day)
+        val week = String.format("%s요일", dayOfWeek[tmp[0]])
+        sb.append(year).append(month).append(day).append(week)
+        return sb.toString()
     }
 
     override fun onClick(view: View) {
@@ -259,6 +380,11 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
 
             R.id.before-> {
                 binding.monthCalendar.goToPrevious()
+            }
+            R.id.addButton-> {
+                val intent = Intent(this, AddActivity::class.java)
+                intent.putExtra("storeId", storeId)
+                startActivity(intent)
             }
         }
     }
@@ -275,16 +401,30 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
         val dayArray = date.date.toString().split(" ")
 
         Log.e("달력 요일", "$day ${dayOfWeek[dayArray[0]]}")
+        Log.e("변경 전 infoList", "$infoList ${allInfo[date]}")
         binding.date.text = String.format("%02d일 %s요일", day, dayOfWeek[dayArray[0]])
-
-
-        // 일정 변경 시 아래 리스트 목록 변경
-        val size = schedule.getOrDefault(date, 0)
         infoList.clear()
+        val size = schedule.getOrDefault(date, 0)
+        val tmp = allInfo.getOrDefault(date, ArrayList())
 
-        for(i in 0 until size) {
-            infoList.add(DetailInfo(date.toString(), "test", "5000", "test", "100000"))
+        for(item in tmp) {
+            infoList.add(item)
         }
+
+        //infoList = allInfo.getOrDefault(date, ArrayList())
+        // 일정 변경 시 아래 리스트 목록 변경
+        //val size = schedule.getOrDefault(date, 0)
+        //val tmp = allInfo.getOrDefault(date, ArrayList())
+
+        //for(i in 0 until size) {
+        //    infoList.add(tmp[i])
+        //}
+
+        //for(i in 0 until size) {
+            //val dateFormat = dateFormatter(date, true)
+            //infoList.add(DetailInfo(dateFormat, "test", "5000", "test", "100000"))
+        //}]
+        Log.e("변경 후 infoList", "$infoList ${allInfo[date]}")
         adapter.notifyDataSetChanged()
     }
 
@@ -298,9 +438,25 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
         if(schedule.containsKey(day)) {
             val count = schedule[day]!!
             for(i in 0 until count) {
-                infoList.add(DetailInfo(day.toString(), "17:00", "100000", "30분", "400000"))
+                Log.e("존재", "존재")
+                val dayFormatter = dateFormatter(day, true)
+                //infoList.add(DetailInfo(dayFormatter, "17:00", "100000", "30분", "400000"))
             }
         }
+    }
+
+    private fun timeCalc(start:LocalDateTime, end:LocalDateTime):String {
+        val duration = Duration.between(start, end)
+        val minutes = duration.toMinutes()
+        val sb = StringBuilder()
+        val hours = (minutes / 60).toInt()
+        val min = (minutes % 60).toInt()
+        val minFormat = String.format("%02d분", min)
+
+        if(hours > 0) sb.append(hours).append("시간").append(minFormat)
+        else sb.append(minFormat)
+
+        return sb.toString()
     }
 
 }
