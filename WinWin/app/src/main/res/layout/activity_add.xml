@@ -77,7 +77,8 @@
                     android:cursorVisible="false"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    style="@style/addTextInfo"/>
+                    style="@style/addTextInfo"
+                    android:gravity="end" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_marginStart="10dp"
@@ -205,7 +206,8 @@
                     android:inputType="number"
                     android:maxLines="1"
                     android:gravity="end"
-                    android:paddingEnd="5dp"/>
+                    android:paddingEnd="5dp"
+                    style="@style/addTextInfo"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -249,7 +251,8 @@
                     android:inputType="number"
                     android:maxLines="1"
                     android:gravity="end"
-                    android:paddingEnd="5dp"/>
+                    android:paddingEnd="5dp"
+                    style="@style/addTextInfo"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -293,7 +296,8 @@
                     android:inputType="number"
                     android:maxLines="1"
                     android:gravity="end"
-                    android:paddingEnd="5dp"/>
+                    android:paddingEnd="5dp"
+                    style="@style/addTextInfo"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -415,7 +419,8 @@
             android:background="@drawable/edit_design"
             android:inputType="text"
             android:layout_marginTop="10dp"
-            android:gravity="top"/>
+            android:gravity="top"
+            style="@style/addTextInfo"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/requestBtn"

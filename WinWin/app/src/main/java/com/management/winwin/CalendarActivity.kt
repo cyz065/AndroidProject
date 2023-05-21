@@ -60,6 +60,8 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
         storeCode = intent.getStringExtra("StoreCode")
         storeName = intent.getStringExtra("StoreName")
         storeId = intent.getIntExtra("StoreId", -1)
+
+        Log.e("캘린더 인텐트", "$storeCode, $storeName, $storeId")
         val startSearchTime = intent.getStringExtra("Start")
         val endSearchTime = intent.getStringExtra("End")
 
@@ -104,7 +106,7 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
     }
 
     private fun calendarSetting(startSearchTime:String, endSearchTime:String) {
-        if(storeName == null && storeCode == null) {
+        if(storeName == null && storeCode == null && storeId < 0) {
             finish()
             return
         }
@@ -384,6 +386,8 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
             R.id.addButton-> {
                 val intent = Intent(this, AddActivity::class.java)
                 intent.putExtra("storeId", storeId)
+                intent.putExtra("storeName", storeName)
+                Log.e("달력에서 추가버튼", "$storeId $storeName")
                 startActivity(intent)
             }
         }
@@ -457,6 +461,14 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
         else sb.append(minFormat)
 
         return sb.toString()
+    }
+
+    override fun onResume() {
+        val day = Calendar.getInstance()
+        val searchDate = intent.getStringExtra("date")
+        Log.e("searchDate", "$searchDate")
+
+        super.onResume()
     }
 
 }

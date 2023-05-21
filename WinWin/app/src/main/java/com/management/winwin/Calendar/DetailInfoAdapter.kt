@@ -7,17 +7,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.RotateAnimation
-import android.widget.LinearLayout
 import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.management.winwin.R
 import com.management.winwin.databinding.InfoListBinding
-import com.management.winwin.databinding.ItemBinding
-import com.management.winwin.startServer.WorkDetail
 import java.lang.StringBuilder
 import java.text.DecimalFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class DetailInfoAdapter(val context: Context, private val infoList:ArrayList<DetailInfo>) : RecyclerView.Adapter<DetailInfoAdapter.ViewHolder>() {
     private val decimalFormat = DecimalFormat("#,###")
@@ -27,7 +24,14 @@ class DetailInfoAdapter(val context: Context, private val infoList:ArrayList<Det
         fun bind(info:DetailInfo) {
             binding.schedule.text = info.date
             binding.workTime.text = "근무시간: " + info.workTime
-            binding.restTime.text = timeCalc(info.breakTime)//info.breakTime.toString() + "분"
+            //binding.restTime.text = timeCalc(info.breakTime)//info.breakTime.toString() + "분"
+            binding.additionalPay.text = "추가수당: " + decimalFormat.format(info.extraPay.toDouble()).toString() + "원"
+            binding.startWorkTime.text = "출근시간: " + timeToString(info.startTime)
+            binding.endWorkTime.text = "퇴근시간: " + timeToString(info.endTime)
+            binding.rest.text = timeCalc(info.breakTime)
+            binding.over.text = "연장수당: " + getPercentage(info.longPayRate)
+            binding.holidayWork.text = "휴일수당: " + getPercentage(info.holidayPayRate)
+            binding.nightWork.text = "야근수당: " + getPercentage(info.nightPayRate)
 
             val moneyFormat = decimalFormat.format(info.wage.toDouble())
             val totalFormat = decimalFormat.format(info.totalPay.toDouble())
@@ -35,14 +39,14 @@ class DetailInfoAdapter(val context: Context, private val infoList:ArrayList<Det
             binding.total.text = totalFormat.toString() + "원"
 
             binding.detail.setOnClickListener {
-                if(binding.hidenView.visibility == View.VISIBLE) {
+                if(binding.hiddenView.visibility == View.VISIBLE) {
                     TransitionManager.beginDelayedTransition(binding.cardView, AutoTransition())
-                    binding.hidenView.visibility = View.GONE
+                    binding.hiddenView.visibility = View.GONE
                     binding.detail.setImageResource(R.drawable.ic_baseline_keyboard_arrow_down_24)
                 }
                 else {
                     TransitionManager.beginDelayedTransition(binding.cardView, AutoTransition())
-                    binding.hidenView.visibility = View.VISIBLE
+                    binding.hiddenView.visibility = View.VISIBLE
                     binding.detail.setImageResource(R.drawable.ic_baseline_keyboard_arrow_up_24)
                 }
             }
@@ -87,5 +91,17 @@ class DetailInfoAdapter(val context: Context, private val infoList:ArrayList<Det
         else sb.append(min).append("분")
 
         return sb.toString()
+    }
+
+    private fun timeToString(time: String): String {
+        val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+        val datetimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+        val dateTime = LocalDateTime.parse(time, datetimeFormatter)
+        return dateTime.format(timeFormatter)
+    }
+
+    private fun getPercentage(percentage:Int):String {
+        return if(percentage == 0) "해당없음"
+        else "$percentage%"
     }
 }
