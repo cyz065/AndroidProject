@@ -53,3 +53,15 @@
 * 홈 화면과 다르게 설정 된 기간(이번 달) 동안의 내역만 조회
 
 ![녹화_2023_05_23_20_41_33_239](https://github.com/cyz065/AndroidProject/assets/50603211/1e84aa60-1e2a-4c5a-8f22-4c6a5def3388)
+
+## 5. 근무 기록 추가
+
+* 추가하기 버튼 클릭을 통해 해당 근무지의 근무 기록을 추가
+
+* number picker와 date picker를 통해 추가 수당 배율 및 날짜 & 시간 입력 가능
+
+* 현재 추가 후 DB에는 정상적으로 저장 되지만, 앱에는 적용 X -> onResume 메소드에 서버 요청 메소드 추가 예정
+
+![녹화_2023_05_23_21_01_56_208](https://github.com/cyz065/AndroidProject/assets/50603211/2d484b0f-5645-4c9f-a5e5-2244977befa9)
+
+
