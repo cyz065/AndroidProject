@@ -52,6 +52,8 @@
 
 * 홈 화면과 다르게 설정 된 기간(이번 달) 동안의 내역만 조회
 
+* (5)의 근무 기록 추가로 인해 일정이 새롭게 추가된 경우, 달력에 새롭게 추가된 일정 추가
+
 ![녹화_2023_05_23_20_41_33_239](https://github.com/cyz065/AndroidProject/assets/50603211/1e84aa60-1e2a-4c5a-8f22-4c6a5def3388)
 
 ## 5. 근무 기록 추가
@@ -60,8 +62,9 @@
 
 * number picker와 date picker를 통해 추가 수당 배율 및 날짜 & 시간 입력 가능
 
-* 현재 추가 후 DB에는 정상적으로 저장 되지만, 앱에는 적용 X -> onResume 메소드에 서버 요청 메소드 추가 예정
+* onResume() 메소드에 HTTP통신 메소드를 구현하고, adapter에 notifyDataSetChanged() 메소드를 통해 새로운 기록이 추가되는 경우 이를 반영한 결과를 출력
 
-![녹화_2023_05_23_21_01_56_208](https://github.com/cyz065/AndroidProject/assets/50603211/2d484b0f-5645-4c9f-a5e5-2244977befa9)
+![녹화_2023_05_23_22_06_00_864](https://github.com/cyz065/AndroidProject/assets/50603211/b637c6d9-8732-4237-8ba2-229cfaa352d0)
+
 
 
