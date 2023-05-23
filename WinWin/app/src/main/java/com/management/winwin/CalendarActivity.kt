@@ -44,6 +44,8 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
     private val allInfo = HashMap<CalendarDay, ArrayList<DetailInfo>>()
     // 일자별 일정의 개수
     private val schedule = HashMap<CalendarDay, Int>()
+    private lateinit var start:String
+    private lateinit var end:String
 
     private val dayOfWeek = mutableMapOf<String, String>(
         ("Mon" to "월"), ("Sun" to "일"), ("Tue" to "화"),
@@ -65,8 +67,15 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
         val startSearchTime = intent.getStringExtra("Start")
         val endSearchTime = intent.getStringExtra("End")
 
-        if (startSearchTime != null && endSearchTime != null)
-            calendarSetting(startSearchTime, endSearchTime)
+        if (startSearchTime != null) {
+            start = startSearchTime
+        }
+        if (endSearchTime != null) {
+            end = endSearchTime
+        }
+
+        //if (startSearchTime != null && endSearchTime != null)
+            //calendarSetting(startSearchTime, endSearchTime)
 
         binding.next.setOnClickListener(this)
         binding.before.setOnClickListener(this)
@@ -110,7 +119,8 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
             finish()
             return
         }
-
+        allInfo.clear()
+        binding.monthCalendar.removeDecorators()
         val startTimeCalendar = Calendar.getInstance()
         var endTimeCalendar = Calendar.getInstance()
 
@@ -324,9 +334,11 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
                         val today = Calendar.getInstance()
                         today.set(currentYear, currentMonth, currentDate)
                         infoList = allInfo.getOrDefault(CalendarDay.from(today), ArrayList())
+
                         adapter = DetailInfoAdapter(baseContext, infoList)
-                        binding.information.setHasFixedSize(true)
                         binding.information.adapter = adapter
+                        adapter.notifyDataSetChanged()
+                        binding.information.setHasFixedSize(true)
                     }
 
                     else {
@@ -408,13 +420,16 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
         Log.e("변경 전 infoList", "$infoList ${allInfo[date]}")
         binding.date.text = String.format("%02d일 %s요일", day, dayOfWeek[dayArray[0]])
         infoList.clear()
+
         val size = schedule.getOrDefault(date, 0)
         val tmp = allInfo.getOrDefault(date, ArrayList())
 
         for(item in tmp) {
             infoList.add(item)
         }
-
+        Log.e("인포 사이즈", "${infoList.size}")
+        //val adapter = DetailInfoAdapter(baseContext, infoList)
+        //binding.information.adapter = adapter
         //infoList = allInfo.getOrDefault(date, ArrayList())
         // 일정 변경 시 아래 리스트 목록 변경
         //val size = schedule.getOrDefault(date, 0)
@@ -463,11 +478,9 @@ class CalendarActivity : AppCompatActivity(), View.OnClickListener, OnMonthChang
         return sb.toString()
     }
 
-    override fun onResume() {
-        val day = Calendar.getInstance()
-        val searchDate = intent.getStringExtra("date")
-        Log.e("searchDate", "$searchDate")
 
+    override fun onResume() {
+        calendarSetting(start, end)
         super.onResume()
     }
 

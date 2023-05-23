@@ -267,7 +267,7 @@ class AddActivity : AppCompatActivity(), View.OnClickListener {
         Log.e("메시지 확인", "wage : $wage extraPay : $extraPay totalPay : $totalPay breakTime: $breakTime holidayPayRate: $holidayPayRate long: $longPayRate nig: $nightPayRate memo: $memo")
 
 
-        val work = RequestWork(storeId, startTime.toString(), endTime.toString(), wage, 0, 100000, 60, 0, 0, 0, memo)
+        val work = RequestWork(storeId, startTime.toString(), endTime.toString(), wage, 25000, 75000, 0, 0, 0, 50, memo)
         retIn.requestWork(authorization = token, body = work).enqueue(object:
             Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

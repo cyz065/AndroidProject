@@ -52,17 +52,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-        requestToServer()
+        //requestToServer()
 
         setSupportActionBar(binding.mainToolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
-        supportActionBar!!.setLogo(R.drawable.temp_logo)
+        supportActionBar!!.setLogo(R.drawable.ic_small_logo)
         binding.next.setOnClickListener(this)
         binding.nextCalendar.setOnClickListener(this)
         calendar = binding.calendar
 
-        getSimpleWorkInfo()
-        calendarSetting()
+        //getSimpleWorkInfo()
+        //calendarSetting()
 
         binding.calendar.setOnMonthChangedListener { _, date ->
             val year = date.year
@@ -90,15 +90,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
-
+        val day = calendar.get(Calendar.DATE)
         // 실제 현재 달의 경우 +1을 설정
         val month = calendar.get(Calendar.MONTH) // 서버 전송 시 지난달
         Log.e("년 월", "$year ${month + 1}") // 현재 달로 표시
-        calendar.set(year, month, 1) // 지난 달 표기
+        calendar.set(year, month - 1, 1) // 지난 달 표기
         val endOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH) // 4월에 대한 마지막 날짜
 
-        startSearchTime = LocalDate.of(year, month, 1).atTime(0,0,0)
-        endSearchTime = LocalDate.of(year, month + 1, endOfMonth).atTime(23, 59, 59)
+        startSearchTime = LocalDate.of(year, month + 1, 1).atTime(0,0,0)
+        endSearchTime = LocalDate.of(year, month + 1, day).atTime(23, 59, 59)
 
         val startString = startSearchTime.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
         val endString = endSearchTime.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
@@ -119,6 +119,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     val message = body.message
                     val data = body.data
                     Log.e("서버 성공", "$data")
+                    workList.clear()
                     for(store in data) {
                         workList.add(store)
                     }
@@ -127,6 +128,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                     val adapter = CardAdapter(baseContext, workList)
                     binding.recyclerView.adapter = adapter
+                    adapter.notifyDataSetChanged()
                     adapter.itemClick = object:CardAdapter.ItemClick{
                         override fun onClick(view: View, position: Int) {
                             val intent = Intent(baseContext, CalendarActivity::class.java)
@@ -180,6 +182,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
     private fun calendarSetting() {
+        binding.calendar.removeDecorators()
         val startTimeCalendar = Calendar.getInstance()
         var endTimeCalendar = Calendar.getInstance()
 
@@ -429,6 +432,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 Toast.makeText(this, "달력 조회 클릭", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    override fun onResume() {
+        getSimpleWorkInfo()
+        calendarSetting()
+        super.onResume()
     }
 
 

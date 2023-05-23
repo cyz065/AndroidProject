@@ -14,7 +14,6 @@ class WorkInfoAdapter(val context: Context, private val workList:ArrayList<Work>
     private val colors = context.resources.getIntArray(R.array.cardColors)
     private var index = 0
 
-
     inner class ViewHolder(val binding: InfoItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(info:Work) {
             binding.workSite.text = info.storeName
